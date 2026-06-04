@@ -20,37 +20,37 @@ export default function Dashboard() {
           <StatCard
             title="Total Farms"
             value={dashboardStats.totalFarms}
-            icon="🏡"
+            icon="farm"
             color="green"
           />
           <StatCard
             title="Total Acreage"
             value={`${dashboardStats.totalAcreage} acres`}
-            icon="📍"
+            icon="location"
             color="blue"
           />
           <StatCard
             title="Active Crops"
             value={dashboardStats.activeCrops}
-            icon="🌱"
+            icon="plant"
             color="yellow"
           />
           <StatCard
             title="Healthy Fields"
             value={dashboardStats.healthyFields}
-            icon="✅"
+            icon="check"
             color="green"
           />
           <StatCard
             title="Equipment Operational"
             value={dashboardStats.equipmentOperational}
-            icon="🚜"
+            icon="equipment"
             color="blue"
           />
           <StatCard
             title="Supplies In Stock"
             value={dashboardStats.suppliesInStock}
-            icon="📦"
+            icon="box"
             color="yellow"
           />
         </div>

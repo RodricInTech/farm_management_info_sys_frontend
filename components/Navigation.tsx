@@ -7,11 +7,11 @@ export default function Navigation() {
   const pathname = usePathname();
 
   const navItems = [
-    { href: "/crop-tracking", label: "Crop Tracking" },
+    { href: "/crop-tracking", label: "Crop Records" },
     { href: "/fertilizer-records", label: "Fertilizer Records" },
     { href: "/harvest-records", label: "Harvest Records" },
-    { href: "/weather-integration", label: "Weather Integration" },
-    { href: "/expense-tracking", label: "Expense Tracking" }
+    { href: "/weather-integration", label: "Weather Reports" },
+    { href: "/expense-tracking", label: "Expenses" }
   ];
 
   return (
@@ -21,25 +21,24 @@ export default function Navigation() {
           🌾 Farm Manager
         </Link>
       </div>
-      
+
       <nav className="flex-1 px-4 py-6">
         <div className="space-y-2">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`block px-4 py-3 rounded-md text-sm font-medium transition-colors ${
-                pathname === item.href
-                  ? "bg-green-800"
-                  : "hover:bg-green-600"
-              }`}
+              className={`block px-4 py-3 rounded-md text-sm font-medium transition-colors ${pathname === item.href
+                ? "bg-green-800"
+                : "hover:bg-green-600"
+                }`}
             >
               {item.label}
             </Link>
           ))}
         </div>
       </nav>
-      
+
       <div className="p-6 border-t border-green-600 text-sm">
         Admin
       </div>
