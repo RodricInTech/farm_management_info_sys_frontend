@@ -1,13 +1,51 @@
+"use client";
+
+import { useState } from "react";
 import StatCard from "@/components/StatCard";
+import FormModal from "@/components/FormModal";
 
 export default function ExpenseTracking() {
-    const expenses = [
+    const [expenses, setExpenses] = useState([
         { id: 1, category: "Fertilizers", item: "NPK Fertilizer", amount: "MK250", date: "2026-05-15", cropName: "Wheat" },
         { id: 2, category: "Seeds", item: "Corn Seeds", amount: "MK180", date: "2026-05-10", cropName: "Corn" },
         { id: 3, category: "Labor", item: "Field Workers", amount: "MK320", date: "2026-05-18", cropName: "Multiple" },
         { id: 4, category: "Equipment", item: "Irrigation Pump Repair", amount: "MK150", date: "2026-05-12", cropName: "General" },
         { id: 5, category: "Pesticides", item: "Insecticide Spray", amount: "MK95", date: "2026-05-16", cropName: "Rice" },
         { id: 6, category: "Utilities", item: "Electricity", amount: "MK200", date: "2026-05-01", cropName: "General" },
+    ]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleAddExpense = (formData: Record<string, string>) => {
+        const newExpense = {
+            id: expenses.length + 1,
+            category: formData.category,
+            item: formData.item,
+            amount: `MK${formData.amount}`,
+            date: formData.date,
+            cropName: formData.cropName,
+        };
+        setExpenses([...expenses, newExpense]);
+    };
+
+    const expenseFields = [
+        { name: "item", label: "Item", type: "text" as const, required: true },
+        {
+            name: "category",
+            label: "Category",
+            type: "select" as const,
+            required: true,
+            options: [
+                { value: "Fertilizers", label: "Fertilizers" },
+                { value: "Seeds", label: "Seeds" },
+                { value: "Labor", label: "Labor" },
+                { value: "Equipment", label: "Equipment" },
+                { value: "Pesticides", label: "Pesticides" },
+                { value: "Utilities", label: "Utilities" },
+            ],
+        },
+        { name: "cropName", label: "Crop/Field", type: "text" as const, required: true },
+        { name: "amount", label: "Amount (MK)", type: "number" as const, required: true },
+        { name: "date", label: "Date", type: "date" as const, required: true },
     ];
 
     const expenseByCategory = [
@@ -26,9 +64,9 @@ export default function ExpenseTracking() {
 
                 {/* Stats Section */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <StatCard title="Total Expenses" value="MK1,820" change="This month" />
-                    <StatCard title="Avg Expense/Day" value="MK60.67" change="Current period" />
-                    <StatCard title="Budget Used" value="73%" change="Of monthly budget" />
+                    <StatCard title="Total Expenses" value="MK1,820" icon="equipment" />
+                    <StatCard title="Avg Expense/Day" value="MK60.67" icon="box" />
+                    <StatCard title="Budget Used" value="73%" icon="check" />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
@@ -59,7 +97,9 @@ export default function ExpenseTracking() {
                     <div className="lg:col-span-2 bg-white rounded-lg shadow overflow-hidden">
                         <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                             <h2 className="text-lg font-semibold text-gray-800">Recent Expenses</h2>
-                            <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm">
+                            <button
+                                onClick={() => setIsModalOpen(true)}
+                                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm">
                                 + Add Expense
                             </button>
                         </div>
@@ -93,6 +133,14 @@ export default function ExpenseTracking() {
                         </div>
                     </div>
                 </div>
+
+                <FormModal
+                    isOpen={isModalOpen}
+                    title="Add Expense Record"
+                    fields={expenseFields}
+                    onClose={() => setIsModalOpen(false)}
+                    onSubmit={handleAddExpense}
+                />
             </div>
         </main>
     );

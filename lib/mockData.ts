@@ -3,29 +3,29 @@
 export const farms = [
   {
     id: 1,
-    name: "Green Valley Farm",
-    location: "Iowa, USA",
+    name: "Namitete Farm",
+    location: "Lilongwe District",
     size: 250,
     crops: ["Corn", "Soybeans"],
-    owner: "John Smith",
+    owner: "Mwale Phiri",
     status: "Active"
   },
   {
     id: 2,
-    name: "Sunset Acres",
-    location: "Illinois, USA",
+    name: "Kachebere Estate",
+    location: "Blantyre District",
     size: 180,
     crops: ["Wheat", "Corn"],
-    owner: "Sarah Johnson",
+    owner: "Grace Mbewe",
     status: "Active"
   },
   {
     id: 3,
-    name: "Prairie Fields",
-    location: "Minnesota, USA",
+    name: "Lilongwe Valley Fields",
+    location: "Lilongwe District",
     size: 320,
     crops: ["Corn", "Soybeans", "Wheat"],
-    owner: "Mike Davis",
+    owner: "Peter Kabali",
     status: "Active"
   }
 ];

@@ -1,16 +1,50 @@
+"use client";
+
+import { useState } from "react";
 import StatCard from "@/components/StatCard";
+import FormModal from "@/components/FormModal";
 
 export default function WeatherIntegration() {
-    const weatherForecast = [
+    const [weatherForecast] = useState([
         { day: "Today", condition: "Partly Cloudy", temp: "28°C", humidity: "65%", windSpeed: "12 km/h", rainfall: "0mm" },
         { day: "Tomorrow", condition: "Sunny", temp: "30°C", humidity: "55%", windSpeed: "8 km/h", rainfall: "0mm" },
         { day: "Day 3", condition: "Rainy", temp: "22°C", humidity: "85%", windSpeed: "18 km/h", rainfall: "25mm" },
         { day: "Day 4", condition: "Cloudy", temp: "25°C", humidity: "70%", windSpeed: "10 km/h", rainfall: "5mm" },
-    ];
+    ]);
 
-    const weatherAlerts = [
+    const [weatherAlerts, setWeatherAlerts] = useState([
         { id: 1, type: "Heavy Rain", severity: "High", date: "2026-05-25", message: "Heavy rainfall expected on 25th. Ensure proper drainage." },
         { id: 2, type: "Temperature Drop", severity: "Medium", date: "2026-05-27", message: "Temperature may drop to 15°C. Protect sensitive crops." },
+    ]);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleAddAlert = (formData: Record<string, string>) => {
+        const newAlert = {
+            id: weatherAlerts.length + 1,
+            type: formData.alertType,
+            severity: formData.severity,
+            date: formData.date,
+            message: formData.message,
+        };
+        setWeatherAlerts([...weatherAlerts, newAlert]);
+    };
+
+    const alertFields = [
+        { name: "alertType", label: "Alert Type", type: "text" as const, required: true },
+        {
+            name: "severity",
+            label: "Severity",
+            type: "select" as const,
+            required: true,
+            options: [
+                { value: "Low", label: "Low" },
+                { value: "Medium", label: "Medium" },
+                { value: "High", label: "High" },
+            ],
+        },
+        { name: "date", label: "Date", type: "date" as const, required: true },
+        { name: "message", label: "Message", type: "text" as const, required: true },
     ];
 
     return (
@@ -19,15 +53,20 @@ export default function WeatherIntegration() {
                 <h1 className="text-3xl font-bold text-gray-900 mb-8">Weather Reports</h1>
                 {/* Current Weather Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <StatCard title="Current Temp" value="28°C" change="Humidity: 65%" />
-                    <StatCard title="Wind Speed" value="12 km/h" change="NE Direction" />
-                    <StatCard title="Rainfall" value="0mm" change="No rain today" />
+                    <StatCard title="Current Temp" value="28°C" icon="check" />
+                    <StatCard title="Wind Speed" value="12 km/h" icon="equipment" />
+                    <StatCard title="Rainfall" value="0mm" icon="plant" />
                 </div>
 
                 {/* Weather Alerts */}
                 <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
-                    <div className="px-6 py-4 border-b border-gray-200">
+                    <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                         <h2 className="text-xl font-semibold text-gray-800">Weather Alerts</h2>
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm">
+                            + Add Alert
+                        </button>
                     </div>
                     <div className="divide-y divide-gray-200">
                         {weatherAlerts.map((alert) => (
@@ -78,6 +117,14 @@ export default function WeatherIntegration() {
                         </table>
                     </div>
                 </div>
+
+                <FormModal
+                    isOpen={isModalOpen}
+                    title="Add Weather Alert"
+                    fields={alertFields}
+                    onClose={() => setIsModalOpen(false)}
+                    onSubmit={handleAddAlert}
+                />
             </div>
         </main>
     );

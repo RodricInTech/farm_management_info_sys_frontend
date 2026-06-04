@@ -1,11 +1,45 @@
+"use client";
+
+import { useState } from "react";
 import StatCard from "@/components/StatCard";
+import FormModal from "@/components/FormModal";
 
 export default function CropTracking() {
-    const crops = [
+    const [crops, setCrops] = useState([
         { id: 1, name: "Wheat", area: "25 acres", status: "Growing", sowingDate: "2026-02-15" },
         { id: 2, name: "Corn", area: "30 acres", status: "Flowering", sowingDate: "2026-03-01" },
         { id: 3, name: "Rice", area: "20 acres", status: "Germination", sowingDate: "2026-04-10" },
         { id: 4, name: "Soybeans", area: "18 acres", status: "Growing", sowingDate: "2026-03-20" },
+    ]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleAddCrop = (formData: Record<string, string>) => {
+        const newCrop = {
+            id: crops.length + 1,
+            name: formData.cropName,
+            area: formData.area,
+            status: formData.status,
+            sowingDate: formData.sowingDate,
+        };
+        setCrops([...crops, newCrop]);
+    };
+
+    const cropFields = [
+        { name: "cropName", label: "Crop Name", type: "text" as const, required: true },
+        { name: "area", label: "Area", type: "text" as const, required: true },
+        { name: "sowingDate", label: "Sowing Date", type: "date" as const, required: true },
+        {
+            name: "status",
+            label: "Status",
+            type: "select" as const,
+            required: true,
+            options: [
+                { value: "Germination", label: "Germination" },
+                { value: "Growing", label: "Growing" },
+                { value: "Flowering", label: "Flowering" },
+                { value: "Maturity", label: "Maturity" },
+            ],
+        },
     ];
 
     return (
@@ -14,16 +48,18 @@ export default function CropTracking() {
                 <h1 className="text-3xl font-bold text-gray-900 mb-8">Crop Records</h1>
                 {/* Stats Section */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <StatCard title="Active Crops" value="4" change="+1 this month" />
-                    <StatCard title="Total Area" value="93 acres" change="All fields utilized" />
-                    <StatCard title="Avg Health" value="82%" change="Good condition" />
+                    <StatCard title="Active Crops" value="4" icon="plant" />
+                    <StatCard title="Total Area" value="93 acres" icon="farm" />
+                    <StatCard title="Avg Health" value="82%" icon="check" />
                 </div>
 
                 {/* Crops Table */}
                 <div className="bg-white rounded-lg shadow overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                         <h2 className="text-xl font-semibold text-gray-800">Active Crops</h2>
-                        <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
                             + Add Record
                         </button>
                     </div>
@@ -58,6 +94,14 @@ export default function CropTracking() {
                         </table>
                     </div>
                 </div>
+
+                <FormModal
+                    isOpen={isModalOpen}
+                    title="Add New Crop Record"
+                    fields={cropFields}
+                    onClose={() => setIsModalOpen(false)}
+                    onSubmit={handleAddCrop}
+                />
             </div>
         </main>
     );
