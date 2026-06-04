@@ -21,8 +21,11 @@ export default function CropTracking() {
 
                 {/* Crops Table */}
                 <div className="bg-white rounded-lg shadow overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-200">
+                    <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                         <h2 className="text-xl font-semibold text-gray-800">Active Crops</h2>
+                        <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                            + Add Record
+                        </button>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full">
